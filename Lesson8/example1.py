@@ -10,7 +10,9 @@ try:
     else:
         raise NotImplementedError(choice)
     print('after exception inside try')
-except (ZeroDivisionError, ValueError) as error:
-    print('exception caught:', error)
+except ZeroDivisionError:
+    print('intercepted division by zero')
+except ValueError:
+    print('intercepted value error')
 
 print('after exception')
