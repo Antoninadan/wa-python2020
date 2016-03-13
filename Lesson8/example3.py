@@ -1,14 +1,9 @@
-def perform_operation(operation, first, second):
-    if operation == '+':
-        return first + second
-    elif operation == '-':
-        return first - second
-    elif operation == '*':
-        return first * second
-    elif operation == '/':
-        return first / second
-    else:
-        raise NotImplementedError('operation not supported')
+operations = {
+    '+': lambda x, y: x + y,
+    '-': lambda x, y: x - y,
+    '*': lambda x, y: x * y,
+    '/': lambda x, y: x / y,
+}
 
 
 def input_number(prompt):
@@ -19,13 +14,22 @@ def input_number(prompt):
         return input_number(prompt)
 
 
+def input_operation(prompt):
+    operation = input(prompt)
+    try:
+        return operations[operation]
+    except KeyError:
+        print('Unsupported operation:', operation)
+        return input_operation(prompt)
+
+
 while True:
     try:
         first_number = input_number('First number: ')
-        operation = input('Operation: ')
+        operation = input_operation('Operation: ')
         second_number = input_number('Second number: ')
-        result = perform_operation(operation, first_number, second_number)
+        result = operation(first_number, second_number)
         print(result)
-    except (ZeroDivisionError, NotImplementedError) as error:
+    except ZeroDivisionError as error:
         print('Error:', error)
     print()
