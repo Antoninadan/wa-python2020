@@ -24,12 +24,13 @@ def input_operation(prompt):
 
 
 while True:
+    first_number = input_number('First number: ')
+    operation = input_operation('Operation: ')
+    second_number = input_number('Second number: ')
     try:
-        first_number = input_number('First number: ')
-        operation = input_operation('Operation: ')
-        second_number = input_number('Second number: ')
         result = operation(first_number, second_number)
-        print(result)
     except ZeroDivisionError as error:
         print('Error:', error)
+    else:
+        print(result)
     print()
