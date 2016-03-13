@@ -2,9 +2,9 @@ print('before exception')
 
 try:
     print('before exception inside try')
-    raise ValueError('supplied value is incorrect')
+    var = 4 / 0
     print('after exception inside try')
-except ValueError:
+except ZeroDivisionError:
     print('exception caught')
 
 print('after exception')
