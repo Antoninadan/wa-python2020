@@ -1,7 +1,8 @@
-import links
+from links import LinkStorage
+from backends.shelve import ShelveBackend
 
 
-def get_link_dialog():
+def get_link_dialog(links):
     name = input('Enter link name: ')
     try:
         url = links.get_link(name)
@@ -11,7 +12,7 @@ def get_link_dialog():
         print(url)
 
 
-def remove_link_dialog():
+def remove_link_dialog(links):
     name = input('Enter link name: ')
     try:
         links.remove_link(name)
@@ -19,7 +20,7 @@ def remove_link_dialog():
         print('link does not exist')
 
 
-def add_link_dialog():
+def add_link_dialog(links):
     name = input('Enter link name: ')
     url = input('Enter URL: ')
     try:
@@ -29,7 +30,7 @@ def add_link_dialog():
 
 
 def main():
-    links.initialize()
+    links = LinkStorage(ShelveBackend())
 
     while True:
         print('''
@@ -44,11 +45,11 @@ def main():
         print()
 
         if choice == '1':
-            get_link_dialog()
+            get_link_dialog(links)
         elif choice == '2':
-            add_link_dialog()
+            add_link_dialog(links)
         elif choice == '3':
-            remove_link_dialog()
+            remove_link_dialog(links)
         elif choice == '4':
             break
         else:
@@ -56,7 +57,7 @@ def main():
 
         print()
 
-    links.finalize()
+    links.close()
 
 
 if __name__ == '__main__':

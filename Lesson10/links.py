@@ -1,26 +1,17 @@
-import shelve
+class LinkStorage:
+    def __init__(self, backend):
+        self.backend = backend
 
-_links = None
+    def add_link(self, short_name, url):
+        if short_name in self.backend.storage:
+            raise KeyError('link already exists')
+        self.backend.storage[short_name] = url
 
+    def get_link(self, short_name):
+        return self.backend.storage[short_name]
 
-def add_link(short_name, url):
-    if short_name in _links:
-        raise KeyError('link already exists')
-    _links[short_name] = url
+    def remove_link(self, short_name):
+        del self.backend.storage[short_name]
 
-
-def get_link(short_name):
-    return _links[short_name]
-
-
-def remove_link(short_name):
-    del _links[short_name]
-
-
-def initialize():
-    global _links
-    _links = shelve.open('links_db')
-
-
-def finalize():
-    _links.close()
+    def close(self):
+        self.backend.close()
