@@ -1,5 +1,7 @@
 from links import LinkStorage
 from backends.shelve import ShelveBackend
+from backends.dictionary import DictionaryBackend
+from backends.json import JSONBackend
 
 
 def get_link_dialog(links):
@@ -30,7 +32,7 @@ def add_link_dialog(links):
 
 
 def main():
-    links = LinkStorage(ShelveBackend())
+    links = LinkStorage(JSONBackend())
 
     while True:
         print('''

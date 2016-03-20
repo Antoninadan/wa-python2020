@@ -10,8 +10,11 @@ class JSONBackend(AbstractBackend):
         self._load_data()
 
     def _load_data(self):
-        with open(FILENAME) as file:
-            self.storage = json.load(file)
+        try:
+            with open(FILENAME) as file:
+                self.storage = json.load(file)
+        except FileNotFoundError:
+            self.storage = {}
 
     def close(self):
         with open(FILENAME, 'w') as file:
