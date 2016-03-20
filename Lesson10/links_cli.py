@@ -11,6 +11,14 @@ def get_link_dialog():
         print(url)
 
 
+def remove_link_dialog():
+    name = input('Enter link name: ')
+    try:
+        links.remove_link(name)
+    except KeyError:
+        print('link does not exist')
+
+
 def add_link_dialog():
     name = input('Enter link name: ')
     url = input('Enter URL: ')
@@ -21,12 +29,15 @@ def add_link_dialog():
 
 
 def main():
+    links.initialize()
+
     while True:
         print('''
         Menu:
         1) Get link
         2) Add link
-        3) Exit
+        3) Delete link
+        4) Exit
         ''')
         choice = input('> ')
 
@@ -37,11 +48,15 @@ def main():
         elif choice == '2':
             add_link_dialog()
         elif choice == '3':
-            return
+            remove_link_dialog()
+        elif choice == '4':
+            break
         else:
             print('Incorrect input')
 
         print()
+
+    links.finalize()
 
 
 if __name__ == '__main__':
