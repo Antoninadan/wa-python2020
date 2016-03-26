@@ -4,5 +4,10 @@
 # 'y', 'y', 't', 't', 'h', 'h', 'o', 'o', 'n', 'n'
 
 
-def repeat_chars(string, count):
-    pass
+def repeat_chars(string, counter):
+    for var in range(len(string)):
+        for i in range(counter):
+            yield string[var]
+
+lst = list(repeat_chars('Python', 6))
+print(lst)
