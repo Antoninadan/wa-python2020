@@ -1,5 +1,5 @@
 # каталог товаров с возможностью добавления отзывов
-# наполнение каталога - название, стоимость в грн, категория
+# товар - это название, стоимость в грн, категория и уникальный идентификатор (артикул)
 categories = {
     '1': 'научно-популярная литература',
     '2': 'беллетристика',
@@ -69,33 +69,39 @@ class Goods():
             if good.id == good_id_:
                 good.self_add_comment()
 
+    @staticmethod
+    def get_good_id(good_id_):
+        for good in Goods.list_goods:
+            if good.id == good_id_:
+                return good
+
     def self_add_comment(self):
         comment_name = input('Введите ваш отзыв: ').strip()
-        return Comment(comment_name, self.id)
+        return Comments(comment_name, self.id)
 
     def self_add_comment_with_name(self, comment_name_):
-        return Comment(comment_name_, self.id)
+        return Comments(comment_name_, self.id)
 
-class Comment():
+class Comments():
     list_comments = []
 
     def __init__(self, name_, good_id_):
         self.name = name_
         self.good_id = good_id_
-        Comment.list_comments.append(self)
+        Comments.list_comments.append(self)
 
     @staticmethod
-    def print_4_good(good_id_):
-        print('Комментарии: ')
+    def print_4_good(good_id_, prompt):
+        print(prompt)
         count = 0
-        for comment in Comment.list_comments:
+        for comment in Comments.list_comments:
             if comment.good_id == good_id_:
                 count += 1
                 print(count, ': ', comment.name)
-            else:
-                print('- отсутствуют')
-                break
+        if count == 0:
+            print('- отсутствуют')
 
+# Готовые примеры для тестирования!
 good1 = Goods('1', 'good1', '100', '1')
 good2 = Goods('2', 'good2', '200', '2')
 good4 = Goods('3', 'good3', '300', '3')
@@ -114,19 +120,37 @@ def main():
         ''')
         choice = input('> ')
 
-        print()
-
         if choice == '1':
-            Goods.new_good()
-            print()
-            print('Вы создали новый товар:', '\n', Goods.list_goods[len(Goods.list_goods) - 1])
+            good = Goods.new_good()
+            print('\n' + 'Вы создали новый товар:' + '\n')
+            print(good)
+            while True:
+                print('Хотите добавить отзыв? (1 - да, 2 - нет)')
+                choice = input('> ')
+
+                if choice == '1':
+                    good.self_add_comment()
+                    break
+                elif choice == '2':
+                    break
+                else:
+                    print('Неверная команда!')
 
         elif choice == '2':
-            Goods.add_comment_id(Goods.find_good())
+            id_ = Goods.find_good()
+            print('\n' + 'Ваш товар:' + '\n')
+            good = Goods.get_good_id(id_)
+            print(good)
+            Goods.add_comment_id(id_)
+            Comments.print_4_good(id_, 'Все комментарии к данному товару: ')
 
         elif choice == '3':
-            print()
-            Comment.print_4_good(Goods.find_good())
+            id_ = Goods.find_good()
+            print('\n' + 'Ваш товар:' + '\n')
+            good = Goods.get_good_id(id_)
+            print(good)
+            Comments.print_4_good(id_, 'Комментарии: ')
+
         elif choice == '4':
             break
         else:
